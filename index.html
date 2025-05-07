@@ -57,7 +57,7 @@
             margin: 20px auto;
             padding: 20px;
             max-width: 300px;
-            border: 1px solid #eee;
+            /* border: 1px solid #eee; */
         }
 
         /* 打印样式 - 只打印二维码 */
@@ -93,13 +93,12 @@
         <div class="input-area">
             <input type="text" id="qr-content" placeholder="输入要生成二维码的内容">
             <button id="generate-btn">生成二维码</button>
+            <button id="print-btn">打印二维码</button>
         </div>
 
         <div class="qr-code-container">
             <div id="qrcode"></div>
         </div>
-
-        <button id="print-btn">打印二维码</button>
     </div>
 </body>
 <script>
