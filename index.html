@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义二维码生成器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .input-area {
+            margin-bottom: 20px;
+        }
+
+        #qr-content {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #generate-btn,
+        #print-btn {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #generate-btn {
+            background-color: #2196F3;
+        }
+
+        #generate-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        #print-btn {
+            background-color: #4CAF50;
+            margin-top: 10px;
+        }
+
+        #print-btn:hover {
+            background-color: #45a049;
+        }
+
+        .qr-code-container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 300px;
+            border: 1px solid #eee;
+        }
+
+        /* 打印样式 - 只打印二维码 */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .qr-code-container,
+            .qr-code-container * {
+                visibility: visible;
+            }
+
+            .qr-code-container {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            #qrcode {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="input-area">
+            <input type="text" id="qr-content" placeholder="输入要生成二维码的内容">
+            <button id="generate-btn">生成二维码</button>
+        </div>
+
+        <div class="qr-code-container">
+            <div id="qrcode"></div>
+        </div>
+
+        <button id="print-btn">打印二维码</button>
+    </div>
+</body>
+<script>
+    // 生成二维码
+    function generateQRCode() {
+        const content = document.getElementById('qr-content').value;
+        if (!content) {
+            alert('请输入要生成二维码的内容');
+            return;
+        }
+
+        const qrcodeElement = document.getElementById('qrcode');
+        qrcodeElement.innerHTML = '';
+
+        new QRCode(qrcodeElement, {
+            text: content,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // 生成后清空输入框
+        document.getElementById('qr-content').value = '';
+    }
+
+    // 绑定事件
+    document.getElementById('generate-btn').addEventListener('click', generateQRCode);
+    document.getElementById('print-btn').addEventListener('click', function () {
+        if (document.getElementById('qrcode').innerHTML === '') {
+            alert('请先生成二维码');
+            return;
+        }
+        window.print();
+    });
+
+    // 按回车键也可以生成二维码
+    document.getElementById('qr-content').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            generateQRCode();
+        }
+    });
+</script>
+
+</html>
